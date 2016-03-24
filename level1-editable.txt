@@ -1,0 +1,48 @@
+O.........1.C....C...........1.O
+O................1.............O
+O..............................O
+O..............................O
+O......................B1..B...O
+O=============~~~~=~~~~========O
+O.............................1O
+O===...........................O
+O............A..OOO.B..........O
+O====...<<<<<<<<<<<<<<<<<<<<...O
+O............................==O
+O..............................O
+O..........B........OOO~~~~~===O
+O....===============...........O
+O.............................XO
+O==============================O
+
+
+What are the core types of collectables;
+1 = key  
+
+And baddies;
+A = walking bad guy 
+B = plant – static, on the floor 
+C = stalactite – static on the ceiling 
+
+D = Spider 
+E = Constantly moving up and down enemy
+F = Static Spider
+
+ENEMIES:
+A – J Enemies 1 - 10!
+
+PLATFORM:
+
+~ - Dissolvable platform
+= - Platform that doesn’t disintegrate
+O – Solid block (brick chunks on the first level)
+< - Platform which pushes the player left
+> - Platform which pushes the player right 
+
+COLLECTABLES:
+1 – 7 collectables
+
+MISC:
+% - Player starting point
+X  - eXit door to next level
+.   - blank space

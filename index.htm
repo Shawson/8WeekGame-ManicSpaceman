@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Shaws Game!</title>
+	<!--<script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+	<script type="text/javascript" language="javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" language="javascript" src="js/array-helper.js"></script>
+	<script type="text/javascript" language="javascript" src="js/math.js"></script>
+	<script type="text/javascript" language="javascript" src="js/geometry.js"></script>
+	<script type="text/javascript" language="javascript" src="js/animation.js"></script>
+	<script type="text/javascript" language="javascript" src="js/game.js"></script>
+	<script type="text/javascript" language="javascript" src="js/gameobjects.js"></script>
+	<script type="text/javascript" language="javascript" src="js/level.js"></script>
+	<script type="text/javascript" language="javascript" src="js/mm-objects.js"></script>
+	<script type="text/javascript" language="javascript" src="js/mm-game.js"></script>
+	<script type="text/javascript" language="javascript" src="js/mm-helpers.js"></script>
+	<script type="text/javascript" language="javascript" src="js/input-manager.js"></script>
+	<script type="text/javascript" language="javascript" src="js/resource-loader.js"></script>
+	<script type="text/javascript" language="javascript" src="js/level-manager.js"></script>
+	<script type="text/javascript" language="javascript" src="js/sound-manager.js"></script>
+	<script type="text/javascript" language="javascript" src="js/particle-emitter.js"></script>
+	
+	<style type="text/css">
+		body { background-color:#000; font-family:"Courier New", Courier, monospace; color:#0f0;}
+		#container { width:800px; margin:auto; }
+		#loading-container { margin-top:300px; }
+		#loading-bar { width : 780px; height: 40px; border: solid 1px #0F0; padding:5px; }
+		#loading-bar #bar { display:block; background-color:#0F0; width:0%; height:100%; }
+		a { color: #F00; }
+	</style>
+</head>
+<body>
+	<div id="container">
+    	<div id="loading-container">
+            Manic Spaceman Loading...
+            <div id="loading-bar">
+                <div id="bar"></div>
+            </div>
+        </div>
+		<canvas id="canvas" width="800" height="425">
+			<h2>Unfortunatly, Manic Spaceman uses some technology which your web browser does not yet support.</h2>  <p>But don't worry!  You can still play it using the latest version of one of these better (and totally free!) web browsers;
+        <a href="http://www.mozilla-europe.org/en/firefox/">Firefox</a>, <a href="http://www.google.com/chrome">Google Chrome</a>, <a href="http://www.opera.com/">Opera</a> and <a href="http://www.apple.com/safari/">Safari</a>.</p>
+        </canvas>
+	</div>
+		<script type="text/javascript" language="javascript">
+		r = new ResourceLoader();
+			
+		window.onload = init;
+
+		function init() {
+		
+			$('#loading-bar #bar').width('0%');
+		
+			// data files
+			r.AddText('manifest.txt');
+			r.AddText('verticle-baddie-test.txt');
+			r.AddText('airport.txt');
+			r.AddText('level1.txt');
+			r.AddText('level2.txt');
+			r.AddText('level3.txt');
+			r.AddText('level4.txt');
+			r.AddText('night-mode.txt');
+			r.AddText('bonus.txt');
+			
+			// full screen images
+			r.AddImage('gfx/Splash.jpg');
+			r.AddImage('gfx/GameOver.jpg');
+			r.AddImage('gfx/GameComplete.jpg');
+			
+			// sprites
+			r.AddImage('gfx/robo.png');
+			r.AddImage('gfx/robo_idle.png');
+			r.AddImage('gfx/spider.png');
+
+			r.AddImage('gfx/sam-run-41w-11frames.png');
+			r.AddImage('gfx/sam-idle-5frames.png');
+			r.AddImage('gfx/sam-fall.png');
+			r.AddImage('gfx/sam-transport-26frames.png');
+			r.AddImage('gfx/sam-death-4frames.png');
+
+			r.AddImage('gfx/collectables-1.png');
+			r.AddImage('gfx/collectables-2.png');
+			r.AddImage('gfx/collectables-3.png');
+			r.AddImage('gfx/collectables-4.png');
+			r.AddImage('gfx/collectables-5.png');
+			r.AddImage('gfx/roof-alien.png');
+			r.AddImage('gfx/floor-alien-7-frames.png');
+			
+			r.AddImage('gfx/exit-idle.png');
+			r.AddImage('gfx/exit-active-5frames.png');
+
+			// hud graphics
+			r.AddImage('gfx/hud-timer-pips.gif');
+			r.AddImage('gfx/hud-timer-surround.gif');
+			r.AddImage('gfx/hud-timer-surround-urgent.gif');
+			r.AddImage('gfx/hud-heart.gif');
+			
+			// background
+			r.AddImage('gfx/atmosphere.png');
+			r.AddImage('gfx/atmosphere-night.png');
+			r.AddImage('gfx/moon.png');
+			r.AddImage('gfx/mini-moon.png');
+			r.AddImage('gfx/stars.jpg');
+			r.AddImage('gfx/stars-night.jpg');
+			
+			// level components
+			r.AddImage('gfx/hanging-platform.gif');
+			r.AddImage('gfx/hanging-platform.gif');
+			r.AddImage('gfx/hanging-platform.gif');
+			r.AddImage('gfx/brick-side.png');
+			r.AddImage('gfx/moving-platform-6-frames.gif');
+
+			r.AddImage('gfx/floor-1.gif');
+			r.AddImage('gfx/floor-2.gif');
+			r.AddImage('gfx/floor-3.gif');
+
+			r.AddImage('gfx/platform-1.gif');
+			r.AddImage('gfx/platform-2.gif');
+
+			r.AddImage('gfx/dissolve-1-5-frames.png');
+			r.AddImage('gfx/dissolve-2-5-frames.png');
+			r.AddImage('gfx/dissolve-3-5-frames.png');
+			r.AddImage('gfx/dissolve-4-5-frames.png');
+			r.AddImage('gfx/dissolve-5-5-frames.png');
+
+			r.AddImage('gfx/floor-bits-1.png');
+			r.AddImage('gfx/floor-bits-2.png');
+			r.AddImage('gfx/floor-bits-3.png');
+			r.AddImage('gfx/floor-bits-4.png');
+			r.AddImage('gfx/floor-bits-5.png');
+			r.AddImage('gfx/floor-bits-6.png');
+			r.AddImage('gfx/floor-bits-7.png');
+			r.AddImage('gfx/floor-bits-8.png');
+			r.AddImage('gfx/floor-bits-9.png');
+			r.AddImage('gfx/floor-bits-10.png');
+			r.AddImage('gfx/floor-bits-11.png');
+
+			r.AddImage('gfx/torch.png');
+			r.AddImage('gfx/torch-reverse.png');
+
+			// sounds - use handles for these as the file name may change depending on browser..
+			if (document.createElement('audio').canPlayType('audio/ogg')) 
+			{
+			    r.AddSound('sounds/foot-steps.ogg', 'foot-steps');
+			    r.AddSound('sounds/Grunt huh_BLASTWAVEFX_17724.ogg', 'jump');
+			    r.AddSound('sounds/gravel-footstep.ogg', 'gravel-foot-steps');
+			    r.AddSound('sounds/cockgun2.ogg', 'pickup');
+			    r.AddSound('sounds/1.05-myst-island-the-tower.ogg', 'music1');
+			    //r.AddSound('sounds/1.11-mechanical-age-sirrus-theme.ogg', 'music2');
+			    //r.AddSound('sounds/1.18-selenitic-age-selenitic-mystgate.ogg', 'music3');
+			    r.AddSound('sounds/32329__FreqMan__heartmonitor_EKG.ogg', 'dead');
+			    r.AddSound('sounds/Male Grunt-SoundBible.com-68178715.ogg', 'die');
+			    r.AddSound('sounds/teleport_activate.ogg', 'transporter');
+			    r.AddSound('sounds/break1.ogg', 'break1');
+			    r.AddSound('sounds/break2.ogg', 'break2');
+			    r.AddSound('sounds/break3.ogg', 'break3');
+			}
+			else if (document.createElement('audio').canPlayType('audio/wav')) 
+			{
+			    r.AddSound('sounds/foot-steps.wav', 'foot-steps');
+			    r.AddSound('sounds/Grunt huh_BLASTWAVEFX_17724.wav', 'jump');
+			    r.AddSound('sounds/gravel-footstep.wav', 'gravel-foot-steps');
+			    r.AddSound('sounds/cockgun2.wav', 'pickup');
+			    r.AddSound('sounds/1.05-myst-island-the-tower.wav', 'music1');
+			    //r.AddSound('sounds/1.11-mechanical-age-sirrus-theme.wav', 'music2');
+			    //r.AddSound('sounds/1.18-selenitic-age-selenitic-mystgate.wav', 'music3');
+			    r.AddSound('sounds/32329__FreqMan__heartmonitor_EKG.wav', 'dead');
+			    r.AddSound('sounds/Male Grunt-SoundBible.com-68178715.wav', 'die');
+			    r.AddSound('sounds/teleport_activate.wav', 'transporter');
+			    r.AddSound('sounds/break1.wav', 'break1');
+			    r.AddSound('sounds/break2.wav', 'break2');
+			    r.AddSound('sounds/break3.wav', 'break3');
+			}
+			else if (document.createElement('audio').canPlayType('audio/mp3')) 
+			{
+				r.AddSound('sounds/foot-steps.mp3', 'foot-steps');
+			    r.AddSound('sounds/Grunt huh_BLASTWAVEFX_17724.mp3', 'jump');
+			    r.AddSound('sounds/gravel-footstep.mp3', 'gravel-foot-steps');
+			    r.AddSound('sounds/cockgun2.mp3', 'pickup');
+			    r.AddSound('sounds/1.05-myst-island-the-tower.mp3', 'music1');
+			    //r.AddSound('sounds/1.11-mechanical-age-sirrus-theme.mp3', 'music2');
+			    //r.AddSound('sounds/1.18-selenitic-age-selenitic-mystgate.mp3', 'music3');
+			    r.AddSound('sounds/32329__FreqMan__heartmonitor_EKG.mp3', 'dead');
+			    r.AddSound('sounds/Male Grunt-SoundBible.com-68178715.mp3', 'die');
+			    r.AddSound('sounds/teleport_activate.mp3', 'transporter');
+			    r.AddSound('sounds/break1.mp3', 'break1');
+			    r.AddSound('sounds/break2.mp3', 'break2');
+			    r.AddSound('sounds/break3.mp3', 'break3');
+			}
+
+			checkLoadStatus();
+		}
+		
+		function checkLoadStatus() {
+			if (r.loadcount > 0) {
+				var pc = 100 - ((r.loadcount / r.objects.length) * 100);
+				$('#loading-bar #bar').width(pc.toString() + '%');
+				setTimeout("checkLoadStatus()", 100); //wait 1/10th a second, then try again
+			}
+			else {
+				$('#loading-container').css('display','none');
+				start_game();
+                        }
+		}
+		
+		function start_game() {
+			g = new ManicMinerGame(800, 425, 'canvas');
+			g.SetFps( 25 );
+			g.wireFrame = false;
+			g.showFps = false;
+			g.SetLives( 4 );
+			g.GodMode = false;
+
+			lmgr = new LevelManager(r.GetObject('manifest.txt'), r, new ManicMinorGameObjectFactory(r));
+
+			g.LevelManager = lmgr;
+			g.InputManager = new ManicMinorKeyboardInputManager();
+			g.ResourceManager = r;
+			g.SoundManager = new SoundManager(32);
+			
+			// setup the input handler
+			$(document).keydown(function(e) { g.InputManager.press(e); });
+			$(document).keyup(function(e) {	g.InputManager.release(e); });
+			
+			g.Run();
+			
+		}
+	</script>
+</body>
+</html>
