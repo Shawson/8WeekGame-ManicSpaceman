@@ -7,3 +7,5 @@ it was all coded from scratch and within the 8 week time limit!
 
 Apologies to anyone whom I've ripped off for use of their grapics/ sounds- all assets 
 were sourced from frantic google searches, mostly on the evening of the last day!
+
+Playable here; http://shawson.github.io/8WeekGame-ManicSpaceman/index.htm
