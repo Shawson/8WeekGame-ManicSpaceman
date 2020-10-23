@@ -16,7 +16,7 @@ function LevelManager(manifest_file, resource_manager, objectFactory) {
 	this.ObjectFactory = objectFactory;
 	this.CurrentLevel = 0;
 
-	this.Levels = this.ManifestFile.split('\r\n');
+	this.Levels = this.ManifestFile.split('\n');
 
 }
 LevelManager.prototype.GetNextLevel = function () {
